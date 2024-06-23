@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<Head>
+    <script>
+        var name, item, amount;
+        window.alert("Hello, welcome to my website, I am pleased to meet you!!!")
+        name = window.prompt("Please enter your name" );
+        item = window.prompt("What is the item you are looking for today? " );
+        amount = window.prompt("How many would you like? " );
+        now =new Date();
+        hour = now.getHours();
+    
+        if (hour < 12){
+            documetn.write("<h1> Good Morning ")
+        } else if (hour < 18) {
+            document.write("<h1> Good Afternoon ")
+        } else {
+            document.write("<h1> Good Evening ")
+        }
+
+        document.writeln(name + ", Thank you for Ordering!!! I see you wanted " + amount + " amounts of " + item +".")
+        </script>
+</Head>
+<body>
+    <h1>
+    <script>
+        function formatDate(date) {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+            return date.toLocaleDateString(options);
+        }
+        now = new Date();
+        next = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+        time = formatDate(next);
+        document.writeln("Your order will arrive on " + time + ".")
+    </script>
+    </h1>
+</body>
+
+</html>
