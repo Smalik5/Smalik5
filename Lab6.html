@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
+    <meta name="theme-color" content="#fff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <meta name="description" content="Hey lets search about cats.">
+    <title>Cat Facts</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <main class="">
+        <header>
+            <h1>Cat Facts</h1>
+        </header>
+        <hr>
+        <section>
+            <div>
+                <button class=" w-full p-2 btn btn-outline-primary" id="btn">Show Cats</button>
+            </div>
+            <hr>
+            <div>
+                <table class="table w-full max-w-[1000px] brd">
+                    <thead class="thead">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Text</th>
+                            <th scope="col">FactID</th>
+                        </tr>
+                    </thead>
+                    <tbody class="data_sets"></tbody>
+                </table>
+            </div>
+            <hr>
+            <div>
+                <img class="image max-w-[400px] max-h-[400px] object-cover object-top w-full h-full" src="favicon.ico" alt="">
+            </div>
+        </section>
+    </main>
+    <script>
+        let LoadCatPhoto = (pic) => {
+    try {
+        let image = document.querySelector('.image')
+        if (image) {
+            image.src = pic
+        }
+    } catch {}
+}
+
+let LoadFacts = (data) => {
+    try {
+        let data_sets = document.querySelector('.data_sets')
+        if (data_sets) {
+            let sorted = data.sort((a, b) => a.factId - b.factId)
+            if (sorted && sorted.length > 0) {
+                sorted.map((v, k) => {
+                    let output = `
+                        <tr class="id_${v.factId} ani">
+                            <th scope="row">${k}</th>
+                            <td>${v.text}</td>
+                            <td>${v.factId}</td>
+                        </tr>
+                    `
+                    let already_added = document.querySelector(`.id_${v.factId}`)
+                    if (already_added) {
+                        data_sets.innerHTML = output
+                    } else {
+                        data_sets.innerHTML += output
+                    }
+                })
+
+            }
+        } else {
+            alert(`Please check your page. Something went wrong. ClassName (data_sets) is not found.`)
+        }
+    } catch {}
+}
+
+let getApi = async() => {
+    try {
+        let ax = await fetch('https://brianobruno.github.io/cats.json')
+        let data = await ax.json()
+        if (data) {
+            LoadCatPhoto(data.catPhoto)
+            LoadFacts(data.facts)
+        } else {
+            setTimeout(getApi, 2000)
+        }
+    } catch {
+        setTimeout(getApi, 2000)
+    }
+}
+
+let Recurssion = () => {
+    try {
+        let btn = document.querySelector('#btn')
+        if (btn) {
+            btn.addEventListener('click', e => {
+                getApi()
+            })
+        } else {
+            setTimeout(Recurssion, 2000)
+        }
+    } catch (e) {
+        console.log(e)
+        alert(`Something went wrong. Try reloading your page again.`)
+        setTimeout(Recurssion, 2000)
+    }
+};
+
+Recurssion()
+    </script>
+    <hr> Saahil Malik, 07/01/2024
+    
+</body>
+
+</html>
